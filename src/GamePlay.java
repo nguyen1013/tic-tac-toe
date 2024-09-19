@@ -24,7 +24,6 @@ public class GamePlay {
         resetGameButton.restartButton.addActionListener(e -> restartGame());
 
         initializeBoard();
-
         frame.setVisible(true);
     }
 
