@@ -1,4 +1,5 @@
 public class App {
-    public static void app(String[] args) {}
-
+    public static void main(String[] args) {
+        new GamePlay();
+    }
 }
