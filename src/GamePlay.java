@@ -2,45 +2,18 @@ import java.awt.*;
 import javax.swing.*;
 
 public class GamePlay {
-    int width = 600;
-    int height = 700;
-
-    JFrame frame = new JFrame("Tic Tac Toe");
-    JLabel label = new JLabel();
-    JPanel panel = new JPanel();
+    Frame frame = new Frame(600, 700);   
+    Panel panel = new Panel();
+    Label label = new Label();
+    ResetGame resetGameButton = new ResetGame();
     JPanel gameBoard = new JPanel();
-    JButton restartButton = new JButton("Restart");
-
-    static JButton[][] tileButtons = new JButton[3][3];
-    char playerX = 'X';
-    char playerO = 'O';
-    char currentPlayer = playerX;
+    static TileButton[][] tileButtons = new TileButton[3][3];
+    
+    Player player = new Player('X');
 
     public GamePlay() {
-        frame.setSize(width, height);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Tic Tac Toe");
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.setLayout(new BorderLayout());
-
-        panel.setLayout(new BorderLayout());
-        panel.setBackground(Color.darkGray);
-
-        label.setForeground(Color.green);
-        label.setFont(new Font("Monospaced", Font.PLAIN, 50));
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setText("Tic Tac Toe");
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(Color.darkGray);
-        restartButton.setPreferredSize(new Dimension(150, 50));
-        restartButton.setFont(new Font("Courier", Font.BOLD, 20));
-        restartButton.setFocusable(false);
-        buttonPanel.add(restartButton);
-
         panel.add(label, BorderLayout.NORTH);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        panel.add(resetGameButton, BorderLayout.SOUTH);
 
         gameBoard.setLayout(new GridLayout(3, 3));
         gameBoard.setBackground(Color.black);
@@ -48,7 +21,7 @@ public class GamePlay {
         frame.add(panel, BorderLayout.NORTH);
         frame.add(gameBoard, BorderLayout.CENTER);
 
-        restartButton.addActionListener(e -> restartGame());
+        resetGameButton.restartButton.addActionListener(e -> restartGame());
 
         initializeBoard();
 
@@ -58,7 +31,7 @@ public class GamePlay {
     private void initializeBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                JButton tileButton = createTileButton();
+                TileButton tileButton = new TileButton();
                 tileButtons[i][j] = tileButton;
                 gameBoard.add(tileButton);
                 tileButton.addActionListener(e -> clickTile(tileButton));
@@ -66,22 +39,14 @@ public class GamePlay {
         }
     }
 
-    private JButton createTileButton() {
-        JButton button = new JButton();
-        button.setBackground(Color.darkGray);
-        button.setFont(new Font("Courier", Font.ITALIC, 50));
-        button.setFocusable(false);
-        return button;
-    }
-
     private void clickTile(JButton button) {
         if (button.getText().isEmpty()) {
-            if (currentPlayer == playerX) {
+            if (player.currentPlayer == 'X') {
                 button.setForeground(Color.pink);
             } else {
                 button.setForeground(Color.yellow);
             }
-            button.setText(String.valueOf(currentPlayer));
+            button.setText(String.valueOf(player.currentPlayer));
 
             checkResult();
         }
@@ -89,13 +54,13 @@ public class GamePlay {
 
     private void checkResult() {
         if (checkWin()) {
-            label.setText("Player " + currentPlayer + " wins!");
+            label.setText("Player " + player.currentPlayer + " wins!");
             disableAllButtons();
         } else if (checkDraw()) {
             label.setText("It's a draw!");
         } else {
-            currentPlayer = (currentPlayer == playerX) ? playerO : playerX;
-            label.setText("Player " + currentPlayer + "'s turn");
+            player.changePlayer();
+            label.setText("Player " + player.currentPlayer + "'s turn");
         }
     }
 
@@ -106,8 +71,8 @@ public class GamePlay {
                 tileButtons[i][j].setEnabled(true);
             }
         }
-        currentPlayer = playerX;
-        label.setText("Player " + currentPlayer + "'s turn");
+        player.currentPlayer = 'X';
+        label.setText("Player " + player.currentPlayer + "'s turn");
     }
 
     private void disableAllButtons() {
