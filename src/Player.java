@@ -1,12 +1,15 @@
 public class Player {
-    char currentPlayer;
+    public enum PlayerType {
+        X, O;
+    }
+    PlayerType currentPlayer;
 
-    public Player(char currentPlayer) {
+    public Player(PlayerType currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
     public void changePlayer() {
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        currentPlayer = (currentPlayer == PlayerType.X) ? PlayerType.O : PlayerType.X;
     }
 
 }

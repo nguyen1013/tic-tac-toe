@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ResetGame extends JPanel {
+public class ResetGamePanel extends JPanel {
     JButton restartButton;
 
-    public ResetGame() {
+    public ResetGamePanel() {
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         restartButton = new JButton("Restart");
         this.setBackground(Color.darkGray);

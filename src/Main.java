@@ -1,33 +1,23 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class GamePlay {
-    Frame frame = new Frame(600, 700);   
-    Panel panel = new Panel();
-    Label label = new Label();
-    ResetGame resetGameButton = new ResetGame();
-    JPanel gameBoard = new JPanel();
+public class Main {
+    static Frame frame = new Frame(600, 700);
+    static TopPanel panel = new TopPanel();
+    static JPanel gameBoard = new JPanel();
     static TileButton[][] tileButtons = new TileButton[3][3];
-    
-    Player player = new Player('X');
+    static Player player = new Player(Player.PlayerType.X);
 
-    public GamePlay() {
-        panel.add(label, BorderLayout.NORTH);
-        panel.add(resetGameButton, BorderLayout.SOUTH);
-
+    public static void startGame() {
         gameBoard.setLayout(new GridLayout(3, 3));
-        gameBoard.setBackground(Color.black);
-
         frame.add(panel, BorderLayout.NORTH);
         frame.add(gameBoard, BorderLayout.CENTER);
-
-        resetGameButton.restartButton.addActionListener(e -> restartGame());
-
+        panel.resetGame.restartButton.addActionListener(e -> restartGame());
         initializeBoard();
         frame.setVisible(true);
     }
 
-    private void initializeBoard() {
+    private static void initializeBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 TileButton tileButton = new TileButton();
@@ -38,43 +28,42 @@ public class GamePlay {
         }
     }
 
-    private void clickTile(JButton button) {
+    private static void clickTile(JButton button) {
         if (button.getText().isEmpty()) {
-            if (player.currentPlayer == 'X') {
+            if (player.currentPlayer == Player.PlayerType.X) {
                 button.setForeground(Color.pink);
             } else {
                 button.setForeground(Color.yellow);
             }
             button.setText(String.valueOf(player.currentPlayer));
-
             checkResult();
         }
     }
 
-    private void checkResult() {
+    private static void checkResult() {
         if (checkWin()) {
-            label.setText("Player " + player.currentPlayer + " wins!");
+            panel.label.setText("Player " + player.currentPlayer + " wins!");
             disableAllButtons();
         } else if (checkDraw()) {
-            label.setText("It's a draw!");
+            panel.label.setText("It's a draw!");
         } else {
             player.changePlayer();
-            label.setText("Player " + player.currentPlayer + "'s turn");
+            panel.label.setText("Player " + player.currentPlayer + "'s turn");
         }
     }
 
-    private void restartGame() {
+    private static void restartGame() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 tileButtons[i][j].setText("");
                 tileButtons[i][j].setEnabled(true);
             }
         }
-        player.currentPlayer = 'X';
-        label.setText("Player " + player.currentPlayer + "'s turn");
+        player.currentPlayer = Player.PlayerType.X;
+        panel.label.setText("Player " + player.currentPlayer + "'s turn");
     }
 
-    private void disableAllButtons() {
+    private static void disableAllButtons() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (tileButtons[i][j].getText().isEmpty()) {
@@ -109,5 +98,9 @@ public class GamePlay {
             }
         }
         return true;
+    }
+
+    public static void main(String[] args) {
+        startGame();
     }
 }
