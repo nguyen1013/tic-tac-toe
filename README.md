@@ -4,7 +4,7 @@
 This repository contains a simple implementation of the classic game Tic Tac Toe. The game is built using Java with GUI using Swing libary, for two players to compete against each other.
 
 ## Features
-Play a 3x3 grid Tic Tac Toe game in the terminal.
+Play a 3x3 grid Tic Tac Toe game.
 Two-player mode where both players take turns.
 Real-time validation of moves, ensuring players can only choose empty spots.
 Automatic detection of win, draw, or ongoing game states.
